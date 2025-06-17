@@ -64,7 +64,7 @@ npm run codegen
 
 ### Subscription types
 
-- **Incident**: Users with this subscription type will be notified when the incident associated is updated. This subscription type needs an incident_id value associated.
+- **Incident**: Users with this subscription type will be notified when the incident associated is updated. This subscription type needs an incident_id value associated. Users subscribe and unsubscribe to these from an existing incident page.
   ```
   {
       "userId": "63320ce63ec803072c9f529c"
@@ -72,14 +72,14 @@ npm run codegen
       "incident_id": 10,
   }
   ```
-- **New Incident**: Users with this subscription type will be notified when a new Incident is created. The notification will be sent after finish the next site build when the Incident page is actually created.
+- **New Incident**: Users with this subscription type will be notified when a new Incident is created. The notification will be sent after finish the next site build when the Incident page is actually created. Users may remove this subscription from their "Account" page.
   ```
   {
       "userId": "63320ce63ec803072c9f529c"
       "type": "new-incidents",
   }
   ```
-- **Entities**: Users can subscribe to a specific Entity. The user with this subscription type will be notified when a new Incident associated with an specific Entity is created or when an existing Incident is updated to be associated with that Entity.
+- **Entities**: Users can subscribe to a specific Entity. The user with this subscription type will be notified when a new Incident associated with an specific Entity is created or when an existing Incident is updated to be associated with that Entity. Users subscribe and unsubscribe to these from an existing entity page.
   ```
   {
       "userId": "63320ce63ec803072c9f529c",
@@ -94,14 +94,30 @@ npm run codegen
       "type": "submission-promoted"
   }
   ```
+- **AI Briefing**: Users with this subscription type will be notified on batch of new incidents created in the past week and other updates. User accounts are automatically added to this subscription upon account creation. Users may remove this subscription from their "Account" page.
+  ```
+  {
+      "userId": "63320ce63ec803072c9f529c",
+      "type": "ai-briefing"
+  }
+  ```
 
 These subscription types are also documented in [subscriptions.js](..//gatsby-site/src/utils/subscriptions.js) file.
+
+### Emailing All Users
+
+None of the subscriptions cover the entirety of the userbase. Most users do not create accounts. Other users may unsubscribe from the AI Briefing. In the event it is necessary to email all website users, such as when it is legally necessary to notify users of terms or data management changes, you have the following options:
+
+1. Email from a migration. Todo. How?
+2. Create a new email form in the user interface for administratively triggering a new email send from an administrative user.
+3. Dump the emails from the `auth` database and manually email all of them.
 
 ### Sending Email Notifications
 
 [MailerSend](https://www.mailersend.com/) is used to send email notifications.
 
-Email notifications to New Incidents (subscription type **New Incident**), Incident updates (subscription type **Incident**) and Submission Promoted (subscription type **Submission Promoted**) are sent when the next build finishes. This is because we have to wait until the new Incident page is generated and accessible.
+Email notifications to New Incidents (subscription type **New Incident**), Incident updates (subscription type **Incident**) and Submission Promoted (subscription type **Submission Promoted**) are sent when the next build finishes. This is because we have to wait until the new Incident page is generated and accessible. AI Briefing notifications (subscription type **AI Briefing**) are sent on a weekly basis conditional on there being new incidents over the last week.
+
 When a new Incident is created or updates, a pending notification item is saved into the `notifications` DB collection with `processed=false` field.
 And finally, as part of the site build process, we processed all pending notifications (`processed=false`), send the emails to all recipients, and update the items with `processed=true` and `sentDate=[now]`.
 
