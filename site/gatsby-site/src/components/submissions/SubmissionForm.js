@@ -432,22 +432,22 @@ const SubmissionForm = ({ onChange = null, promoType = null }) => {
                 {...TextInputGroupProps}
               />
               <TagsInputGroup
-                data-cy="developers-input"
-                name="developers"
-                label={t('Alleged developer of AI system')}
-                icon={faCode}
-                placeholder={t('Who created or built the technology involved in the incident?')}
+                data-cy="deployers-input"
+                name="deployers"
+                label={t('Alleged deployer of AI system')}
+                icon={faHandPointRight}
+                placeholder={t('Who employed or was responsible for the technology?')}
                 className="mt-3"
                 options={entityNames}
                 {...TextInputGroupProps}
               />
 
               <TagsInputGroup
-                data-cy="deployers-input"
-                name="deployers"
-                label={t('Alleged deployer of AI system')}
-                icon={faHandPointRight}
-                placeholder={t('Who employed or was responsible for the technology?')}
+                data-cy="developers-input"
+                name="developers"
+                label={t('Alleged developer of AI system')}
+                icon={faCode}
+                placeholder={t('Who created or built the technology involved in the incident?')}
                 className="mt-3"
                 options={entityNames}
                 {...TextInputGroupProps}
