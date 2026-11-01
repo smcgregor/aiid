@@ -38,6 +38,7 @@ import {
 import FlowbiteSearchInput from 'components/forms/FlowbiteSearchInput';
 import { Checkbox, Select } from 'flowbite-react';
 import IncidentsField from 'components/incidents/IncidentsField';
+import TextCharacterCount from 'components/forms/TextCharacterCount';
 import { graphql, useStaticQuery } from 'gatsby';
 
 const SubmissionForm = ({ onChange = null, promoType = null }) => {
@@ -313,6 +314,7 @@ const SubmissionForm = ({ onChange = null, promoType = null }) => {
               }}
             />
           </div>
+          <TextCharacterCount text={values.text} />
         </div>
 
         {promoType && (
